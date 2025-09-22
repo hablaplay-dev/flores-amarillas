@@ -104,65 +104,77 @@
 
   <!-- ===== Lógica del slideshow ===== -->
   <script>
-    (async function(){
-      // Nombres que el slider intentará cargar automáticamente
-      const candidates = ["foto.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg","foto6.jpg"];
-      const existing = [];
-      for (const name of candidates) {
-        try {
-          const res = await fetch(name, { method: "HEAD", cache: "no-store" });
-          if (res.ok) existing.push(name);
-        } catch(e) { /* ignora errores si el archivo no existe */ }
-      }
-      // Si no encuentra ninguna, muestra un placeholder
-      if (existing.length === 0) existing.push("foto.jpg");
-
+    (function () {
+      const bases = ["foto1","foto2","foto3","foto4","foto5","foto6","foto7","foto8","foto9","foto10"];
+      const exts  = ["jpg","jpeg","png","webp","JPG","JPEG","PNG","WEBP"];
       const slidesEl = document.getElementById("slides");
-      const dotsEl = document.getElementById("dots");
-
-      // Crea las imágenes
-      const imgs = existing.map((src, i) => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = `Foto ${i+1}`;
-        img.className = "slide object-cover";
-        slidesEl.appendChild(img);
-
-        const dot = document.createElement("button");
-        dot.className = "w-2.5 h-2.5 rounded-full bg-white/60 border border-black/10";
-        dot.addEventListener("click", () => show(i, true));
-        dotsEl.appendChild(dot);
-
-        return img;
-      });
-
-      // Estado
-      let idx = 0, timer;
-      function show(n, manual=false){
-        imgs[idx].classList.remove("show");
-        dotsEl.children[idx].classList.remove("ring-2","ring-amber-400","bg-white");
-        idx = (n + imgs.length) % imgs.length;
-        imgs[idx].classList.add("show");
-        dotsEl.children[idx].classList.add("ring-2","ring-amber-400","bg-white");
-        if (manual) restart();
+      const dotsEl   = document.getElementById("dots");
+      const found = [];
+  
+      // Detecta archivos existentes cargándolos como <img> (evita errores con HEAD/CORS)
+      function tryLoad(src){
+        return new Promise(resolve=>{
+          const img = new Image();
+          img.onload  = () => resolve(src);
+          img.onerror = () => resolve(null);
+          img.src = src + "?v=" + Date.now(); // evita caché
+        });
       }
-      function next(){ show(idx+1); }
-      function prev(){ show(idx-1); }
-      function start(){ timer = setInterval(next, 4000); }
-      function stop(){ clearInterval(timer); }
-      function restart(){ stop(); start(); }
-
-      document.getElementById("next").addEventListener("click", () => next());
-      document.getElementById("prev").addEventListener("click", () => prev());
-
-      // Inicializa
-      imgs.forEach(img => { img.style.opacity = 0; });
-      show(0);
-      start();
-
-      // Pausa al pasar el mouse (desktop)
-      slidesEl.addEventListener("mouseenter", stop);
-      slidesEl.addEventListener("mouseleave", start);
+  
+      async function discover(){
+        for (const b of bases){
+          // prueba cada extensión hasta encontrar una
+          for (const e of exts){
+            const src = `${b}.${e}`;
+            const ok  = await tryLoad(src);
+            if (ok){ found.push(ok); break; }
+          }
+        }
+        if (found.length === 0) found.push("foto.jpg"); // fallback
+        buildSlider(found);
+      }
+  
+      function buildSlider(list){
+        const imgs = list.map((src, i) => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = `Foto ${i+1}`;
+          img.className = "slide object-cover w-full h-full";
+          slidesEl.appendChild(img);
+  
+          const dot = document.createElement("button");
+          dot.className = "w-2.5 h-2.5 rounded-full bg-white/60 border border-black/10";
+          dot.addEventListener("click", () => show(i, true));
+          dotsEl.appendChild(dot);
+          return img;
+        });
+  
+        let idx = 0, timer;
+  
+        function show(n, manual=false){
+          imgs[idx].classList.remove("show");
+          dotsEl.children[idx].classList.remove("ring-2","ring-amber-400","bg-white");
+          idx = (n + imgs.length) % imgs.length;
+          imgs[idx].classList.add("show");
+          dotsEl.children[idx].classList.add("ring-2","ring-amber-400","bg-white");
+          if (manual) restart();
+        }
+        function next(){ show(idx+1); }
+        function prev(){ show(idx-1); }
+        function start(){ timer = setInterval(next, 4000); }
+        function stop(){ clearInterval(timer); }
+        function restart(){ stop(); start(); }
+  
+        document.getElementById("next").addEventListener("click", next);
+        document.getElementById("prev").addEventListener("click", prev);
+        slidesEl.addEventListener("mouseenter", stop);
+        slidesEl.addEventListener("mouseleave", start);
+  
+        show(0);
+        start();
+      }
+  
+      discover();
     })();
   </script>
 </body>
