@@ -1,311 +1,164 @@
 <!doctype html>
-<html lang="es" class="">
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Flores amarillas 🌻</title>
 
-  <!-- Tailwind + FontAwesome (ya estaban en tu código) -->
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };
-    tailwind.config = {
-      theme: { extend: {} },
-      plugins: []
-    };
+    tailwind.config = { theme: { extend: {} }, plugins: [] };
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+  <!-- Tipografías elegantes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    * { font-family: 'Inter', sans-serif; }
-    ::-webkit-scrollbar{ display:none }
-    html, body { -ms-overflow-style:none; scrollbar-width:none }
-
-    /* Animación delicada para los girasoles */
-    @keyframes flotar {
-      0%   { transform: translateY(0) rotate(0deg) }
-      50%  { transform: translateY(-8px) rotate(2deg) }
-      100% { transform: translateY(0) rotate(0deg) }
+    :root{
+      --sun1:#fff4bf; /* crema */
+      --sun2:#ffef9c; /* amarillo suave */
     }
-    .girasol {
-      width: 72px; height: 72px;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.12));
-      animation: flotar 6.5s ease-in-out infinite;
-      will-change: transform;
-    }
-    .girasol--sm { width: 48px; height: 48px; animation-duration: 6s }
-    .girasol--lg { width: 96px; height: 96px; animation-duration: 7.5s }
-    .girasol--delay-1 { animation-delay: .6s }
-    .girasol--delay-2 { animation-delay: 1.2s }
-    .girasol--delay-3 { animation-delay: 1.8s }
+    *{ font-family: Manrope, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    h1, h2, h3{ font-family: "Cormorant Garamond", Georgia, serif; }
 
-    /* Contenedor principal */
-    .card {
+    /* Fondo que ocupa SIEMPRE toda la página (evita el corte blanco) */
+    html,body{ height:100%; }
+    body{
+      min-height:100svh; /* soporta móviles modernos */
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,220,120,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(255,215,90,.18), transparent 60%),
+        radial-gradient(900px 500px at 15% 90%, rgba(255,210,120,.18), transparent 60%),
+        linear-gradient(180deg, #fff8db 0%, #fff4c8 60%, #fff0b8 100%);
+      overflow-x:hidden;
+    }
+
+    /* Animación suave para los girasoles */
+    @keyframes flotar { 0%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-8px) rotate(2deg)} 100%{transform:translateY(0) rotate(0)} }
+    .girasol{ width:86px; height:86px; filter:drop-shadow(0 8px 14px rgba(0,0,0,.12)); animation:flotar 7s ease-in-out infinite }
+    .girasol.sm{ width:56px; height:56px; animation-duration:6.2s }
+    .girasol.lg{ width:110px; height:110px; animation-duration:7.8s }
+    .delay1{ animation-delay:.5s } .delay2{ animation-delay:1s } .delay3{ animation-delay:1.5s }
+
+    /* Tarjeta central más grande y aireada */
+    .card{
       backdrop-filter: blur(6px);
+      box-shadow: 0 30px 80px rgba(0,0,0,.12);
     }
   </style>
 </head>
 
-<body class="h-full text-base-content">
-  <div id="main" class="relative w-full min-h-[800px] bg-gradient-to-br from-yellow-50 to-amber-50 overflow-hidden">
+<body>
+  <div id="main" class="relative w-full min-h-[100svh] overflow-hidden">
 
-    <!-- ==== Girasoles decorativos (animados) ==== -->
-    <!-- Top Left -->
-    <div class="absolute top-8 left-8 -rotate-12">
-      <svg class="girasol girasol--lg" viewBox="0 0 100 100" aria-hidden="true">
+    <!-- ===== Girasoles decorativos (SVG) ===== -->
+    <div class="absolute top-6 left-6 -rotate-12">
+      <svg class="girasol lg" viewBox="0 0 100 100" aria-hidden="true">
         <defs>
-          <radialGradient id="petalo1" cx="50%" cy="50%">
-            <stop offset="0%" stop-color="#FFE57F"/>
-            <stop offset="100%" stop-color="#F4C430"/>
-          </radialGradient>
-          <radialGradient id="centro1" cx="50%" cy="50%">
-            <stop offset="0%" stop-color="#7A4A2A"/>
-            <stop offset="100%" stop-color="#4E2E17"/>
-          </radialGradient>
+          <radialGradient id="p1" cx="50%" cy="50%"><stop offset="0%" stop-color="#FFEFA3"/><stop offset="100%" stop-color="#F4C430"/></radialGradient>
         </defs>
         <g transform="translate(50,50)">
-          <!-- pétalos -->
-          <g fill="url(#petalo1)">
-            <!-- 16 pétalos -->
-            <g id="p"><ellipse rx="10" ry="28" transform="translate(0,-35)"/></g>
-            <use href="#p" transform="rotate(22.5)"/>
-            <use href="#p" transform="rotate(45)"/>
-            <use href="#p" transform="rotate(67.5)"/>
-            <use href="#p" transform="rotate(90)"/>
-            <use href="#p" transform="rotate(112.5)"/>
-            <use href="#p" transform="rotate(135)"/>
-            <use href="#p" transform="rotate(157.5)"/>
-            <use href="#p" transform="rotate(180)"/>
-            <use href="#p" transform="rotate(202.5)"/>
-            <use href="#p" transform="rotate(225)"/>
-            <use href="#p" transform="rotate(247.5)"/>
-            <use href="#p" transform="rotate(270)"/>
-            <use href="#p" transform="rotate(292.5)"/>
-            <use href="#p" transform="rotate(315)"/>
-            <use href="#p" transform="rotate(337.5)"/>
+          <g fill="url(#p1)"><g id="a"><ellipse rx="10" ry="28" transform="translate(0,-35)"/></g>
+            <use href="#a" transform="rotate(22.5)"/><use href="#a" transform="rotate(45)"/><use href="#a" transform="rotate(67.5)"/>
+            <use href="#a" transform="rotate(90)"/><use href="#a" transform="rotate(112.5)"/><use href="#a" transform="rotate(135)"/>
+            <use href="#a" transform="rotate(157.5)"/><use href="#a" transform="rotate(180)"/><use href="#a" transform="rotate(202.5)"/>
+            <use href="#a" transform="rotate(225)"/><use href="#a" transform="rotate(247.5)"/><use href="#a" transform="rotate(270)"/>
+            <use href="#a" transform="rotate(292.5)"/><use href="#a" transform="rotate(315)"/><use href="#a" transform="rotate(337.5)"/>
           </g>
-          <!-- centro -->
-          <circle r="16" fill="url(#centro1)"/>
-          <circle r="10" fill="#8b5a38" opacity=".35"/>
+          <circle r="16" fill="#5a3a22"/><circle r="10" fill="#8b5a38" opacity=".35"/>
         </g>
       </svg>
     </div>
 
-    <!-- Top Right -->
-    <div class="absolute top-12 right-12 rotate-12">
-      <svg class="girasol" viewBox="0 0 100 100" aria-hidden="true">
-        <defs>
-          <linearGradient id="petalo2" x1="0" x2="1">
-            <stop offset="0%" stop-color="#FFF3A6"/>
-            <stop offset="100%" stop-color="#F4C430"/>
-          </linearGradient>
-        </defs>
+    <div class="absolute top-12 right-8 rotate-12">
+      <svg class="girasol delay1" viewBox="0 0 100 100" aria-hidden="true">
         <g transform="translate(50,50)">
-          <g fill="url(#petalo2)">
-            <g id="p2"><ellipse rx="9" ry="24" transform="translate(0,-30)"/></g>
-            <use href="#p2" transform="rotate(30)"/>
-            <use href="#p2" transform="rotate(60)"/>
-            <use href="#p2" transform="rotate(90)"/>
-            <use href="#p2" transform="rotate(120)"/>
-            <use href="#p2" transform="rotate(150)"/>
-            <use href="#p2" transform="rotate(180)"/>
-            <use href="#p2" transform="rotate(210)"/>
-            <use href="#p2" transform="rotate(240)"/>
-            <use href="#p2" transform="rotate(270)"/>
-            <use href="#p2" transform="rotate(300)"/>
-            <use href="#p2" transform="rotate(330)"/>
-          </g>
-          <circle r="14" fill="#5a3a22"/>
+          <g fill="#FAD24E"><g id="b"><ellipse rx="9" ry="24" transform="translate(0,-30)"/></g>
+            <use href="#b" transform="rotate(30)"/><use href="#b" transform="rotate(60)"/><use href="#b" transform="rotate(90)"/>
+            <use href="#b" transform="rotate(120)"/><use href="#b" transform="rotate(150)"/><use href="#b" transform="rotate(180)"/>
+            <use href="#b" transform="rotate(210)"/><use href="#b" transform="rotate(240)"/><use href="#b" transform="rotate(270)"/>
+            <use href="#b" transform="rotate(300)"/><use href="#b" transform="rotate(330)"/>
+          </g><circle r="14" fill="#5a3a22"/>
         </g>
       </svg>
     </div>
 
-    <!-- Bottom Left -->
-    <div class="absolute bottom-16 left-16 rotate-45">
-      <svg class="girasol girasol--sm girasol--delay-1" viewBox="0 0 100 100" aria-hidden="true">
-        <g transform="translate(50,50)">
-          <g fill="#F4C430">
-            <g id="p3"><ellipse rx="8" ry="22" transform="translate(0,-28)"/></g>
-            <use href="#p3" transform="rotate(36)"/>
-            <use href="#p3" transform="rotate(72)"/>
-            <use href="#p3" transform="rotate(108)"/>
-            <use href="#p3" transform="rotate(144)"/>
-            <use href="#p3" transform="rotate(180)"/>
-            <use href="#p3" transform="rotate(216)"/>
-            <use href="#p3" transform="rotate(252)"/>
-            <use href="#p3" transform="rotate(288)"/>
-            <use href="#p3" transform="rotate(324)"/>
-          </g>
-          <circle r="12" fill="#6b4226"/>
-        </g>
+    <div class="absolute bottom-12 left-10 rotate-45">
+      <svg class="girasol sm delay2" viewBox="0 0 100 100" aria-hidden="true">
+        <g transform="translate(50,50)"><g fill="#FFD968"><g id="c"><ellipse rx="7" ry="20" transform="translate(0,-26)"/></g>
+          <use href="#c" transform="rotate(30)"/><use href="#c" transform="rotate(60)"/><use href="#c" transform="rotate(90)"/>
+          <use href="#c" transform="rotate(120)"/><use href="#c" transform="rotate(150)"/><use href="#c" transform="rotate(180)"/>
+          <use href="#c" transform="rotate(210)"/><use href="#c" transform="rotate(240)"/><use href="#c" transform="rotate(270)"/>
+          <use href="#c" transform="rotate(300)"/><use href="#c" transform="rotate(330)"/>
+        </g><circle r="10" fill="#6b4226"/></g>
       </svg>
     </div>
 
-    <!-- Bottom Right -->
-    <div class="absolute bottom-12 right-8 -rotate-30">
-      <svg class="girasol girasol--delay-2" viewBox="0 0 100 100" aria-hidden="true">
-        <g transform="translate(50,50)">
-          <g fill="#FBD24B">
-            <g id="p4"><ellipse rx="9" ry="24" transform="translate(0,-30)"/></g>
-            <use href="#p4" transform="rotate(24)"/>
-            <use href="#p4" transform="rotate(48)"/>
-            <use href="#p4" transform="rotate(72)"/>
-            <use href="#p4" transform="rotate(96)"/>
-            <use href="#p4" transform="rotate(120)"/>
-            <use href="#p4" transform="rotate(144)"/>
-            <use href="#p4" transform="rotate(168)"/>
-            <use href="#p4" transform="rotate(192)"/>
-            <use href="#p4" transform="rotate(216)"/>
-            <use href="#p4" transform="rotate(240)"/>
-            <use href="#p4" transform="rotate(264)"/>
-            <use href="#p4" transform="rotate(288)"/>
-            <use href="#p4" transform="rotate(312)"/>
-            <use href="#p4" transform="rotate(336)"/>
-          </g>
-          <circle r="13" fill="#5a3a22"/>
-        </g>
+    <div class="absolute bottom-16 right-10 -rotate-12">
+      <svg class="girasol sm delay3" viewBox="0 0 100 100" aria-hidden="true">
+        <g transform="translate(50,50)"><g fill="#FFE68A"><g id="d"><ellipse rx="7" ry="19" transform="translate(0,-25)"/></g>
+          <use href="#d" transform="rotate(40)"/><use href="#d" transform="rotate(80)"/><use href="#d" transform="rotate(120)"/>
+          <use href="#d" transform="rotate(160)"/><use href="#d" transform="rotate(200)"/><use href="#d" transform="rotate(240)"/>
+          <use href="#d" transform="rotate(280)"/><use href="#d" transform="rotate(320)"/>
+        </g><circle r="9.5" fill="#5a3a22"/></g>
       </svg>
     </div>
+    <!-- ===== Fin decoración ===== -->
 
-    <!-- Girasoles dispersos adicionales -->
-    <div class="absolute top-32 left-1/4 rotate-90">
-      <svg class="girasol girasol--sm girasol--delay-3" viewBox="0 0 100 100" aria-hidden="true">
-        <g transform="translate(50,50)">
-          <g fill="#FFD968">
-            <g id="p5"><ellipse rx="7" ry="20" transform="translate(0,-26)"/></g>
-            <use href="#p5" transform="rotate(30)"/>
-            <use href="#p5" transform="rotate(60)"/>
-            <use href="#p5" transform="rotate(90)"/>
-            <use href="#p5" transform="rotate(120)"/>
-            <use href="#p5" transform="rotate(150)"/>
-            <use href="#p5" transform="rotate(180)"/>
-            <use href="#p5" transform="rotate(210)"/>
-            <use href="#p5" transform="rotate(240)"/>
-            <use href="#p5" transform="rotate(270)"/>
-            <use href="#p5" transform="rotate(300)"/>
-            <use href="#p5" transform="rotate(330)"/>
-          </g>
-          <circle r="10" fill="#6b4226"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="absolute top-48 right-1/4 -rotate-45">
-      <svg class="girasol girasol--sm" viewBox="0 0 100 100" aria-hidden="true">
-        <g transform="translate(50,50)">
-          <g fill="#FFE68A">
-            <g id="p6"><ellipse rx="7" ry="19" transform="translate(0,-25)"/></g>
-            <use href="#p6" transform="rotate(40)"/>
-            <use href="#p6" transform="rotate(80)"/>
-            <use href="#p6" transform="rotate(120)"/>
-            <use href="#p6" transform="rotate(160)"/>
-            <use href="#p6" transform="rotate(200)"/>
-            <use href="#p6" transform="rotate(240)"/>
-            <use href="#p6" transform="rotate(280)"/>
-            <use href="#p6" transform="rotate(320)"/>
-          </g>
-          <circle r="9.5" fill="#5a3a22"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="absolute bottom-32 left-1/3 rotate-180">
-      <svg class="girasol girasol--sm" viewBox="0 0 100 100" aria-hidden="true">
-        <g transform="translate(50,50)">
-          <g fill="#FAD24E">
-            <g id="p7"><ellipse rx="7" ry="20" transform="translate(0,-26)"/></g>
-            <use href="#p7" transform="rotate(45)"/>
-            <use href="#p7" transform="rotate(90)"/>
-            <use href="#p7" transform="rotate(135)"/>
-            <use href="#p7" transform="rotate(180)"/>
-            <use href="#p7" transform="rotate(225)"/>
-            <use href="#p7" transform="rotate(270)"/>
-            <use href="#p7" transform="rotate(315)"/>
-          </g>
-          <circle r="10" fill="#6b4226"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="absolute bottom-48 right-1/3 rotate-60">
-      <svg class="girasol girasol--delay-1" viewBox="0 0 100 100" aria-hidden="true">
-        <g transform="translate(50,50)">
-          <g fill="#F7C842">
-            <g id="p8"><ellipse rx="9" ry="22" transform="translate(0,-28)"/></g>
-            <use href="#p8" transform="rotate(30)"/>
-            <use href="#p8" transform="rotate(60)"/>
-            <use href="#p8" transform="rotate(90)"/>
-            <use href="#p8" transform="rotate(120)"/>
-            <use href="#p8" transform="rotate(150)"/>
-            <use href="#p8" transform="rotate(180)"/>
-            <use href="#p8" transform="rotate(210)"/>
-            <use href="#p8" transform="rotate(240)"/>
-            <use href="#p8" transform="rotate(270)"/>
-            <use href="#p8" transform="rotate(300)"/>
-            <use href="#p8" transform="rotate(330)"/>
-          </g>
-          <circle r="12" fill="#5a3a22"/>
-        </g>
-      </svg>
-    </div>
-    <!-- ==== Fin girasoles decorativos ==== -->
-
-    <!-- ===== Contenido principal ===== -->
-    <div class="absolute inset-0 flex items-center justify-center p-6">
-      <div class="card bg-white/90 border border-neutral-200 shadow-2xl rounded-3xl px-8 py-10 max-w-2xl w-full mx-8">
-
-        <!-- Ícono -->
-        <div class="flex justify-center mb-6">
-          <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
-            <i class="fa-solid fa-heart text-2xl text-amber-600"></i>
+    <!-- ===== Contenido central ampliado ===== -->
+    <section class="relative z-[1] flex items-center justify-center px-6 py-12 md:py-20">
+      <!-- ancho mayor: max-w-5xl; padding generoso; tipografías más grandes -->
+      <article class="card bg-white/92 border border-amber-200 rounded-3xl w-full max-w-5xl mx-auto p-8 md:p-14">
+        <!-- encabezado -->
+        <header class="text-center mb-8 md:mb-10">
+          <div class="mx-auto mb-6 w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#eab308" aria-hidden="true"><path d="M12 21s-7.5-4.35-9.33-9.02C1.31 9.3 3.13 6 6.5 6 8.46 6 9.9 7.14 12 9.25 14.1 7.14 15.54 6 17.5 6c3.37 0 5.19 3.3 3.83 5.98C19.5 16.65 12 21 12 21z"/></svg>
           </div>
-        </div>
-
-        <!-- Título -->
-        <div class="text-center mb-8">
-          <h1 class="text-3xl md:text-4xl text-neutral-800 mb-3 tracking-wide">
+          <h1 class="text-neutral-900 text-4xl md:text-5xl leading-tight">
             En el día de las flores amarillas
           </h1>
-          <div class="w-24 h-px bg-neutral-300 mx-auto"></div>
-        </div>
+          <div class="w-28 h-px bg-neutral-300/70 mx-auto mt-4"></div>
+        </header>
 
-        <!-- Foto (usa foto.jpg en la misma carpeta) -->
-        <div class="flex justify-center mb-8">
-          <img src="./foto.jpg" alt="Nuestra foto" class="w-64 h-64 object-cover rounded-2xl shadow-lg border border-neutral-200">
-        </div>
-
-        <!-- Dedicatoria -->
-        <div class="text-center">
-          <p class="text-lg text-neutral-700 leading-relaxed mb-4">
-            Hoy te regalo un pedacito de sol. Que cada pétalo nos recuerde que contigo
-            todo florece: las risas, los planes y esa calma bonita que encuentro cuando estás.
-          </p>
-          <p class="text-base text-neutral-600">
-            Gracias por ser mi lugar favorito. 🌻💛
-          </p>
-
-          <div class="flex justify-center items-center space-x-4 mt-6">
-            <div class="w-8 h-px bg-neutral-300"></div>
-            <i class="fa-solid fa-heart text-neutral-400"></i>
-            <div class="w-8 h-px bg-neutral-300"></div>
+        <!-- contenido: imagen más grande + texto -->
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <!-- foto -->
+          <div class="flex justify-center">
+            <img src="./foto.jpg" alt="Nuestra foto"
+                 class="w-[420px] h-[420px] max-w-full object-cover rounded-2xl shadow-xl border border-amber-100">
           </div>
+          <!-- texto -->
+          <div class="text-center md:text-left">
+            <p class="text-[1.125rem] leading-relaxed text-neutral-700">
+              Hoy te regalo un pedacito de sol. Que cada pétalo nos recuerde que contigo
+              todo florece: las risas, los planes y esa calma bonita que encuentro cuando estás.
+            </p>
+            <p class="mt-4 text-neutral-600">
+              Gracias por ser mi lugar favorito. <span aria-label="girasol">🌻</span><span aria-label="corazón amarillo">💛</span>
+            </p>
 
-          <p class="text-sm text-neutral-500 mt-4 tracking-wider">
-            Con todo mi amor, siempre
-          </p>
+            <div class="flex md:justify-start justify-center items-center gap-4 mt-6">
+              <div class="w-10 h-px bg-neutral-300"></div>
+              <span class="text-neutral-400">•</span>
+              <div class="w-10 h-px bg-neutral-300"></div>
+            </div>
+
+            <p class="mt-4 text-sm tracking-wide text-neutral-500">
+              Con todo mi amor, siempre
+            </p>
+          </div>
         </div>
+      </article>
+    </section>
+    <!-- ===== Fin contenido central ===== -->
 
-      </div>
-    </div>
-    <!-- ===== Fin contenido ===== -->
-
+    <!-- pie sutil para evitar corte y dar cierre visual -->
+    <footer class="w-full py-8 text-center text-xs text-neutral-500">
+      <span>🌻</span>
+    </footer>
   </div>
 </body>
 </html>
