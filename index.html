@@ -62,10 +62,10 @@
         <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <!-- ===== SLIDESHOW ===== -->
           <div class="flex justify-center">
-            <div class="relative w-[420px] h-[420px] max-w-full rounded-2xl overflow-hidden shadow-xl border border-amber-100">
+            <div class="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border border-amber-100 md:w-[420px] md:h-[420px]">
               <!-- Las imágenes se inyectan aquí -->
               <div id="slides" class="w-full h-full bg-neutral-100"></div>
-
+          
               <!-- Controles -->
               <button id="prev" aria-label="Anterior"
                 class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full w-8 h-8 grid place-items-center shadow">
@@ -75,12 +75,11 @@
                 class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full w-8 h-8 grid place-items-center shadow">
                 ›
               </button>
-
+          
               <!-- Dots -->
               <div id="dots" class="absolute bottom-2 left-0 right-0 flex justify-center gap-2"></div>
             </div>
           </div>
-
           <!-- Texto -->
           <div class="text-center md:text-left">
             <p class="text-[1.125rem] leading-relaxed text-neutral-700">
@@ -139,7 +138,7 @@
           const img = document.createElement("img");
           img.src = src;
           img.alt = `Foto ${i+1}`;
-          img.className = "slide object-cover w-full h-full";
+          img.className = "slide object-contain w-full h-full bg-neutral-100";
           slidesEl.appendChild(img);
   
           const dot = document.createElement("button");
